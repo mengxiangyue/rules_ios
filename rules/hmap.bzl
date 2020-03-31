@@ -22,10 +22,13 @@ def _make_headermap_input_file(namespace, hdrs, flatten_headers):
     """
     entries = []
     for hdr in hdrs:
+    path = hdr.path
+        if path.endswith("-Swift.h"):
+            path = ctx.bin_dir.path + "/" + path
         namespaced_key = namespace + "/" + hdr.basename
-        entries.append("{}|{}".format(hdr.basename, hdr.path))
+        entries.append("{}|{}".format(hdr.basename, path))
         if flatten_headers:
-            entries.append("{}|{}".format(namespaced_key, hdr.path))
+            entries.append("{}|{}".format(namespaced_key, path))
     return "\n".join(entries) + "\n"
 
 def _make_headermap_impl(ctx):
